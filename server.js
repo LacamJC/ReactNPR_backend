@@ -33,7 +33,7 @@ async function setDatabase(){
 }
 
 server.get('/', (req,res)=>{
-    res.send('olá')
+    res.status(200).send('olá')
 })
 
 server.post("/cadastrarPonto",upload.single('foto'), async(req,res)=>{
@@ -90,7 +90,7 @@ server.post('/cadUser', async (req, res) => {
     .then((usuario)=>{
         if(usuario){
             console.log("EMAIL JA EXISTE")
-            res.status(200).send({message:"Email já cadastrado"})
+            res.status(409).send({message:"Email já cadastrado"})
         }else{
             try{
                  bd_usuarios.create({
@@ -238,3 +238,8 @@ server.listen(port, (req,res)=>{
     console.log(`Server listening on port: ${port}`)
     // setTimeout(()=>setDatabase(),2000)
 })
+
+
+
+
+module.exports = server

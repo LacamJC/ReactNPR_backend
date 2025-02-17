@@ -11,21 +11,27 @@ const bd_usuarios = database.define('bd_usuarios', {
 
     nome: {
         type: Sequelize.STRING, 
+        allowNull : false,
 
     } 
     ,
 
     email: {
         type: Sequelize.STRING,
-        unique : true
+        unique : true,
+        allowNull : false,
     },
 
     telefone: {
         type: Sequelize.STRING
+        ,
+        allowNull : false,
     },
 
     senha: {
         type: Sequelize.STRING
+        ,
+        allowNull : false,
     }
 
     // foto: {
@@ -38,7 +44,7 @@ const bd_usuarios = database.define('bd_usuarios', {
 
 })
 
-//  bd_usuarios.sync({force:true})
+ bd_usuarios.sync({force:true})
 
 
  
