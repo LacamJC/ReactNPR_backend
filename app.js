@@ -1,5 +1,5 @@
 const express = require('express')
-const server = express()
+const app = express()
 const port = process.env.PORT || 3001
 
 const DefaultData = require('./database/Data.json')
@@ -11,15 +11,15 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const multer = require('multer')
 const upload = multer({dest: path.join(__dirname, 'public/uploads')})
-server.use(upload.single('foto'))
+app.use(upload.single('foto'))
 
 const bd_pontos = require('./database/models/bd_pontos.js')
 const bd_usuarios = require('./database/models/bd_usuarios.js')
 
 
-server.use(express.json())
-server.use(cors())
-server.use(bodyParser.urlencoded({extended:false}))
+app.use(express.json())
+app.use(cors())
+app.use(bodyParser.urlencoded({extended:false}))
 
 async function setDatabase(){
     try{
@@ -32,11 +32,11 @@ async function setDatabase(){
     }
 }
 
-server.get('/', (req,res)=>{
+app.get('/', (req,res)=>{
     res.status(200).send('olá')
 })
 
-server.post("/cadastrarPonto",upload.single('foto'), async(req,res)=>{
+app.post("/cadastrarPonto",upload.single('foto'), async(req,res)=>{
     console.log("CADASTRANDO PONTO")
     const ponto = {
         email: req.body.email,
@@ -77,7 +77,7 @@ server.post("/cadastrarPonto",upload.single('foto'), async(req,res)=>{
     console.log(ponto)
 })
 
-server.post('/cadUser', async (req, res) => {
+app.post('/cadUser', async (req, res) => {
     console.log("Cadastrando usuário");
     const user = {
         nome : req.body.nome,
@@ -120,7 +120,7 @@ server.post('/cadUser', async (req, res) => {
   })
 
 
-  server.post('/verifyUser/',async (req,res)=>{
+  app.post('/verifyUser/',async (req,res)=>{
     console.log("Verificando usuario")
     const user = {
         email : req.body.email,
@@ -151,7 +151,7 @@ server.post('/cadUser', async (req, res) => {
   })
 
 
-server.get('/pontos', async (req,res)=>{
+app.get('/pontos', async (req,res)=>{
     console.log("PEGANDO TODOS OS PONTOS CADASTRADOS")
     try{
         await bd_pontos.findAll({
@@ -173,11 +173,11 @@ server.get('/pontos', async (req,res)=>{
     }
 })
 
-server.get('/ping', (req,res)=>{
+app.get('/ping', (req,res)=>{
     res.sendStatus(200)
 })
 
-server.put('/updateProfile', async(req,res)=>{
+app.put('/updateProfile', async(req,res)=>{
     
     const userData = {
         nome : req.body.nome,
@@ -234,12 +234,20 @@ server.put('/updateProfile', async(req,res)=>{
     
 })
 
-server.listen(port, (req,res)=>{
-    console.log(`Server listening on port: ${port}`)
+var server = app.listen(port, (req,res)=>{
+    console.log(`app listening on port: ${port}`)
     // setTimeout(()=>setDatabase(),2000)
 })
 
 
 
+app.get('/down', (req,res)=>{
+    res.send("Servidor desligado")
+    server.close()
+    console.log("Servidor desligado")
+})
 
-module.exports = server
+
+
+
+module.exports = app

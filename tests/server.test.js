@@ -1,5 +1,10 @@
-const server = require('../server')
+const server = require('../app')
 const request = require('supertest')
+
+afterEach(async ()=>{
+    await request(server)
+    .get('/down')
+})
 
 
 describe("Testes de servidor", () => {

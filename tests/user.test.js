@@ -1,8 +1,11 @@
-const server = require('../server')
+const server = require('../app')
 const request = require('supertest')
 const sequelize = require('../database/connection')
 
-
+afterEach(async ()=>{
+    await request(server)
+    .get('/down')
+})
 
 beforeAll(async () => {
     await sequelize.sync({force:true})
