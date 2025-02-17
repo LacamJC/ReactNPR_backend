@@ -135,12 +135,12 @@ app.post('/cadUser', async (req, res) => {
 
             const jsonData = JSON.stringify(usuario,null,2)
 
-            res.send({message:"Usuario encontrado", data : jsonData})
+            res.status(200).send({message:"Usuario encontrado", data : jsonData})
 
         }else{
 
             console.log("### Usuario nao encontrado no banco dedados")
-            res.send({message:"Usuario nao encontrado"})
+            res.status(409).send({message:"Usuario nao encontrado"})
         }
     })
     .catch(err=>{
@@ -209,7 +209,7 @@ app.put('/updateProfile', async(req,res)=>{
                         console.log("USUARIO ACHADO")
                         const jsonData = JSON.stringify(usuario,null,2)
 
-                        res.send({message:"Usuario encontrado", data : jsonData})
+                        res.status(200).send({message:"Usuario encontrado", data : jsonData})
                     }
                     else{
                         console.log("USUARIO NAO ENCONTRADO")
@@ -234,20 +234,20 @@ app.put('/updateProfile', async(req,res)=>{
     
 })
 
-var server = app.listen(port, (req,res)=>{
+const server = app.listen(port, (req,res)=>{
     console.log(`app listening on port: ${port}`)
     // setTimeout(()=>setDatabase(),2000)
 })
 
 
 
-app.get('/down', (req,res)=>{
-    res.send("Servidor desligado")
+app.get('/down', ()=>{
+
     server.close()
-    console.log("Servidor desligado")
+
 })
 
 
 
 
-module.exports = app
+module.exports = server

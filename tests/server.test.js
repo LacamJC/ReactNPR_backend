@@ -1,13 +1,12 @@
 const server = require('../app')
 const request = require('supertest')
 
-afterEach(async ()=>{
-    await request(server)
-    .get('/down')
+afterAll(()=>{
+    server.close()
 })
 
-
 describe("Testes de servidor", () => {
+    
     it("Chamada raiz(/) do servidor", async () => {
         const response = await request(server)
         .get('/')
