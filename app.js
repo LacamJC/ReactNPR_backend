@@ -241,11 +241,6 @@ const server = app.listen(port, (req,res)=>{
 
 
 
-app.get('/down', ()=>{
-
-    server.close()
-
-})
 
 
 
